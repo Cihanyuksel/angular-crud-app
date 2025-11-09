@@ -1,0 +1,154 @@
+<div class="container py-4">
+  <!-- Loading State -->
+  <div *ngIf="loading()" class="text-center py-5">
+    <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="4" animationDuration=".5s">
+    </p-progressSpinner>
+    <p class="text-muted mt-3">Loading user details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading() && error()" class="alert alert-danger" role="alert">
+    <i class="pi pi-exclamation-triangle me-2"></i>
+    {{ error() }}
+    <button
+      pButton
+      label="Go Back"
+      icon="pi pi-arrow-left"
+      class="p-button-text p-button-sm ms-3"
+      (click)="goBack()"
+    ></button>
+  </div>
+
+  <!-- User Detail Card -->
+  <p-card *ngIf="!loading() && !error() && user()" class="user-detail-card">
+    <ng-template pTemplate="header">
+      <div class="card-header-custom">
+        <button
+          pButton
+          icon="pi pi-arrow-left"
+          class="p-button-text p-button-rounded"
+          pTooltip="Back to Users"
+          tooltipPosition="bottom"
+          (click)="goBack()"
+        ></button>
+        <h2 class="mb-0">User Details</h2>
+        <div class="action-buttons">
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-warning p-button-outlined p-button-sm me-2"
+            pTooltip="Edit User"
+            tooltipPosition="bottom"
+            (click)="editUser()"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-danger p-button-outlined p-button-sm"
+            pTooltip="Delete User"
+            tooltipPosition="bottom"
+            (click)="deleteUser()"
+          ></button>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="user-info-grid">
+      <!-- Basic Information -->
+      <div class="info-section">
+        <h3 class="section-title"><i class="pi pi-user me-2"></i>Basic Information</h3>
+        <p-divider></p-divider>
+
+        <div class="info-row">
+          <span class="info-label">ID:</span>
+          <p-tag [value]="'#' + user()?.id" severity="info"></p-tag>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Name:</span>
+          <span class="info-value">{{ user()?.name }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Username:</span>
+          <span class="info-value">@{{ user()?.username }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Email:</span>
+          <a [href]="'mailto:' + user()?.email" class="info-link">
+            <i class="pi pi-envelope me-1"></i>{{ user()?.email }}
+          </a>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Phone:</span>
+          <a [href]="'tel:' + user()?.phone" class="info-link">
+            <i class="pi pi-phone me-1"></i>{{ user()?.phone }}
+          </a>
+        </div>
+
+        <div class="info-row" *ngIf="user()?.website">
+          <span class="info-label">Website:</span>
+          <a [href]="'https://' + user()?.website" target="_blank" class="info-link">
+            <i class="pi pi-external-link me-1"></i>{{ user()?.website }}
+          </a>
+        </div>
+      </div>
+
+      <!-- Address Information -->
+      <div class="info-section" *ngIf="user()?.address">
+        <h3 class="section-title"><i class="pi pi-map-marker me-2"></i>Address</h3>
+        <p-divider></p-divider>
+
+        <div class="info-row">
+          <span class="info-label">Street:</span>
+          <span class="info-value">{{ user()?.address?.street }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Suite:</span>
+          <span class="info-value">{{ user()?.address?.suite }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">City:</span>
+          <span class="info-value">{{ user()?.address?.city }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Zipcode:</span>
+          <span class="info-value">{{ user()?.address?.zipcode }}</span>
+        </div>
+
+        <div class="info-row" *ngIf="user()?.address?.geo">
+          <span class="info-label">Coordinates:</span>
+          <span class="info-value">
+            Lat: {{ user()?.address?.geo?.lat }}, Lng: {{ user()?.address?.geo?.lng }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Company Information -->
+      <div class="info-section full-width" *ngIf="user()?.company">
+        <h3 class="section-title"><i class="pi pi-building me-2"></i>Company</h3>
+        <p-divider></p-divider>
+
+        <div class="info-row">
+          <span class="info-label">Name:</span>
+          <span class="info-value">{{ user()?.company?.name }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Catch Phrase:</span>
+          <span class="info-value fst-italic">"{{ user()?.company?.catchPhrase }}"</span>
+        </div>
+
+        <div class="info-row">
+          <span class="info-label">Business:</span>
+          <span class="info-value">{{ user()?.company?.bs }}</span>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</div>

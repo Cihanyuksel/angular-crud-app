@@ -1,0 +1,19 @@
+:host ::ng-deep .custom-paginator {
+  background-color: #f0f0f0;
+  border-top: 2px solid #007bff;
+  padding: 0.5rem;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-page.p-paginator-page-selected {
+  background-color: #9190926c;
+  color: #ffffff;
+}
+
+:host ::ng-deep .clickable-row {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+:host ::ng-deep .clickable-row:hover {
+  background-color: #f8f9fa;
+}

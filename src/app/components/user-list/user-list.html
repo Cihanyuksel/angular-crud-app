@@ -1,0 +1,138 @@
+<div class="position-relative">
+  <p-table
+    [value]="loading ? [] : users"
+    [paginator]="true"
+    [rows]="rows"
+    [first]="first"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    (onPage)="pageChange($event)"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    styleClass="p-datatable-striped p-datatable-sm"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    paginatorStyleClass="custom-paginator"
+  >
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id" style="width: 5%">ID <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="name" style="width: 20%">
+          Name <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="username" style="width: 15%">
+          Username <p-sortIcon field="username"></p-sortIcon>
+        </th>
+        <th pSortableColumn="email" style="width: 21%">
+          Email <p-sortIcon field="email"></p-sortIcon>
+        </th>
+        <th pSortableColumn="phone" style="width: 21%">
+          Phone <p-sortIcon field="phone"></p-sortIcon>
+        </th>
+        <th style="width: 7%">Mail</th>
+        <th style="width: 15%">Actions</th>
+      </tr>
+    </ng-template>
+
+    <!-- BODY -->
+    <ng-template pTemplate="body" let-user>
+      <tr class="clickable-row" (click)="viewUser(user)">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td (click)="$event.stopPropagation()">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-envelope"
+            class="p-button-rounded p-button-text p-button-primary"
+            pTooltip="Send Email"
+            tooltipPosition="top"
+          ></button>
+        </td>
+        <td (click)="$event.stopPropagation()">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-pencil"
+            class="p-button-warning p-button-outlined p-button-sm me-2"
+            pTooltip="Edit User"
+            tooltipPosition="top"
+            (click)="showEditUserModal(user)"
+          ></button>
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-danger p-button-outlined p-button-sm"
+            pTooltip="Delete User"
+            tooltipPosition="top"
+            (click)="showDeleteModal(user)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- LOADER -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="text-center py-5">
+          <div *ngIf="loading" class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div *ngIf="!loading && error" class="text-danger">{{ error }}</div>
+          <div *ngIf="!loading && !error" class="text-muted">No users found</div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- ADD BUTTON -->
+    <ng-template pTemplate="paginatorleft">
+      <p-button label="Add User" icon="pi pi-plus" (click)="showAddUserModal()"> </p-button>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- ADD USER MODAL -->
+<app-modal header="Add New User" [(visible)]="addModalVisible">
+  <app-user-form mode="add" (userSaved)="onUserAdded($event)"></app-user-form>
+</app-modal>
+
+<!-- EDIT USER MODAL -->
+<app-modal header="Edit User" [(visible)]="editModalVisible">
+  <app-user-form
+    mode="edit"
+    [user]="selectedUser"
+    (userSaved)="onUserUpdated($event)"
+    (cancel)="closeModal()"
+  ></app-user-form>
+</app-modal>
+
+<!-- DELETE CONFIRM MODAL -->
+<app-modal header="Delete User" [(visible)]="deleteModal.visible">
+  <div class="text-center">
+    <div *ngIf="deleteLoading" class="mb-3">
+      <span class="spinner-border spinner-border-sm text-danger" role="status"></span>
+      Siliniyor...
+    </div>
+
+    <p *ngIf="!deleteLoading">
+      Are you sure you want to delete <strong>{{ deleteModal.user?.name }}</strong
+      >?
+    </p>
+
+    <div *ngIf="!deleteLoading" class="mt-3 d-flex justify-content-center gap-2">
+      <button
+        pButton
+        label="Cancel"
+        class="p-button-text"
+        (click)="deleteModal.visible = false"
+      ></button>
+      <button pButton label="Delete" class="p-button-danger" (click)="confirmDeleteUser()"></button>
+    </div>
+  </div>
+</app-modal>
