@@ -1,6 +1,32 @@
+<div class="mb-4">
+  <p-button
+    type="button"
+    icon="pi pi-chevron-left"
+    [disabled]="isFirstPage"
+    (click)="prev()"
+    class="custom-prev"
+    text
+  ></p-button>
+  <p-button
+    type="button"
+    icon="pi pi-refresh"
+    (click)="loadUsers()"
+    class="custom-refresh"
+    text
+  ></p-button>
+  <p-button
+    type="button"
+    icon="pi pi-chevron-right"
+    class="custom-next"
+    [disabled]="isLastPage"
+    (click)="next()"
+    text
+  ></p-button>
+</div>
+
 <div class="position-relative">
   <p-table
-    [value]="loading ? [] : users"
+    [value]="isLoadingUsers ? [] : users"
     [paginator]="true"
     [rows]="rows"
     [first]="first"
@@ -42,15 +68,14 @@
         <td>{{ user.email }}</td>
         <td>{{ user.phone }}</td>
         <td (click)="$event.stopPropagation()">
-          <button
-            pButton
-            pRipple
+          <p-button
             type="button"
             icon="pi pi-envelope"
-            class="p-button-rounded p-button-text p-button-primary"
+            [rounded]="true"
+            severity="secondary"
             pTooltip="Send Email"
             tooltipPosition="top"
-          ></button>
+          />
         </td>
         <td (click)="$event.stopPropagation()">
           <button
@@ -58,10 +83,10 @@
             pRipple
             type="button"
             icon="pi pi-pencil"
-            class="p-button-warning p-button-outlined p-button-sm me-2"
+            class="custom-edit p-button-outlined p-button-sm me-2"
             pTooltip="Edit User"
             tooltipPosition="top"
-            (click)="showEditUserModal(user)"
+            (click)="openEditUserModal(user)"
           ></button>
           <button
             pButton
@@ -71,68 +96,61 @@
             class="p-button-danger p-button-outlined p-button-sm"
             pTooltip="Delete User"
             tooltipPosition="top"
-            (click)="showDeleteModal(user)"
+            (click)="openDeleteModal(user)"
           ></button>
         </td>
       </tr>
     </ng-template>
 
-    <!-- LOADER -->
+    <!-- LOADER / EMPTY -->
     <ng-template pTemplate="emptymessage">
       <tr>
         <td colspan="7" class="text-center py-5">
-          <div *ngIf="loading" class="spinner-border text-primary" role="status">
+          <div *ngIf="isLoadingUsers" class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
-          <div *ngIf="!loading && error" class="text-danger">{{ error }}</div>
-          <div *ngIf="!loading && !error" class="text-muted">No users found</div>
+          <div *ngIf="!isLoadingUsers && loadUsersError" class="text-danger">
+            {{ loadUsersError }}
+          </div>
+          <div *ngIf="!isLoadingUsers && !loadUsersError" class="text-muted">No users found</div>
         </td>
       </tr>
     </ng-template>
 
     <!-- ADD BUTTON -->
     <ng-template pTemplate="paginatorleft">
-      <p-button label="Add User" icon="pi pi-plus" (click)="showAddUserModal()"> </p-button>
+      <p-button
+        label="Add User"
+        icon="pi pi-plus"
+        (click)="openAddUserModal()"
+        styleClass="bg-primary-subtle text-primary border-primary"
+      >
+      </p-button>
     </ng-template>
   </p-table>
 </div>
 
 <!-- ADD USER MODAL -->
-<app-modal header="Add New User" [(visible)]="addModalVisible">
+<app-modal header="Add New User" [(visible)]="isAddUserModalVisible">
   <app-user-form mode="add" (userSaved)="onUserAdded($event)"></app-user-form>
 </app-modal>
 
 <!-- EDIT USER MODAL -->
-<app-modal header="Edit User" [(visible)]="editModalVisible">
+<app-modal header="Edit User" [(visible)]="isEditUserModalVisible">
   <app-user-form
     mode="edit"
     [user]="selectedUser"
     (userSaved)="onUserUpdated($event)"
-    (cancel)="closeModal()"
+    (cancel)="onEditCancel()"
   ></app-user-form>
 </app-modal>
 
-<!-- DELETE CONFIRM MODAL -->
-<app-modal header="Delete User" [(visible)]="deleteModal.visible">
-  <div class="text-center">
-    <div *ngIf="deleteLoading" class="mb-3">
-      <span class="spinner-border spinner-border-sm text-danger" role="status"></span>
-      Siliniyor...
-    </div>
-
-    <p *ngIf="!deleteLoading">
-      Are you sure you want to delete <strong>{{ deleteModal.user?.name }}</strong
-      >?
-    </p>
-
-    <div *ngIf="!deleteLoading" class="mt-3 d-flex justify-content-center gap-2">
-      <button
-        pButton
-        label="Cancel"
-        class="p-button-text"
-        (click)="deleteModal.visible = false"
-      ></button>
-      <button pButton label="Delete" class="p-button-danger" (click)="confirmDeleteUser()"></button>
-    </div>
-  </div>
-</app-modal>
+<!-- DELETE USER MODAL -->
+<app-delete-modal
+  [(visible)]="isDeleteModalVisible"
+  [user]="userToDelete"
+  [loading]="isDeletingUser"
+  (cancel)="closeDeleteModal()"
+  (confirm)="confirmDeleteUser()"
+>
+</app-delete-modal>

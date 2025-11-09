@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { UserService } from '../../services/user.service';
-import { User } from '../../model/user.model';
+import { User } from '../../../model/user.model';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-user-form',

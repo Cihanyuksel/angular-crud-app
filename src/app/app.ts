@@ -10,5 +10,5 @@ import { ButtonModule } from 'primeng/button';
   styleUrls: ['./app.css'],
 })
 export class App {
-  protected readonly title = signal('angular-crud-app');
+  protected readonly title = signal('User Management');
 }

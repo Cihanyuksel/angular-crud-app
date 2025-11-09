@@ -1,15 +1,15 @@
 <div class="container py-4">
   <!-- Loading State -->
-  <div *ngIf="loading()" class="text-center py-5">
+  <div *ngIf="isLoadingUser()" class="text-center py-5">
     <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="4" animationDuration=".5s">
     </p-progressSpinner>
     <p class="text-muted mt-3">Loading user details...</p>
   </div>
 
   <!-- Error State -->
-  <div *ngIf="!loading() && error()" class="alert alert-danger" role="alert">
+  <div *ngIf="!isLoadingUser() && loadUserError()" class="alert alert-danger" role="alert">
     <i class="pi pi-exclamation-triangle me-2"></i>
-    {{ error() }}
+    {{ loadUserError() }}
     <button
       pButton
       label="Go Back"
@@ -20,7 +20,7 @@
   </div>
 
   <!-- User Detail Card -->
-  <p-card *ngIf="!loading() && !error() && user()" class="user-detail-card">
+  <p-card *ngIf="!isLoadingUser() && !loadUserError() && user()" class="user-detail-card">
     <ng-template pTemplate="header">
       <div class="card-header-custom">
         <button
@@ -36,10 +36,10 @@
           <button
             pButton
             icon="pi pi-pencil"
-            class="p-button-warning p-button-outlined p-button-sm me-2"
+            class="custom-edit p-button-outlined p-button-sm me-2"
             pTooltip="Edit User"
             tooltipPosition="bottom"
-            (click)="editUser()"
+            (click)="user() && openEditUserModal(user()!)"
           ></button>
           <button
             pButton
@@ -47,7 +47,7 @@
             class="p-button-danger p-button-outlined p-button-sm"
             pTooltip="Delete User"
             tooltipPosition="bottom"
-            (click)="deleteUser()"
+            (click)="user() && openDeleteModal(user()!)"
           ></button>
         </div>
       </div>
@@ -151,4 +151,24 @@
       </div>
     </div>
   </p-card>
+
+  <!-- EDIT USER MODAL -->
+  <app-modal header="Edit User" [(visible)]="isEditUserModalVisible">
+    <app-user-form
+      mode="edit"
+      [user]="selectedUser"
+      (userSaved)="onUserUpdated($event)"
+      (cancel)="onEditCancel()"
+    ></app-user-form>
+  </app-modal>
+
+  <!-- DELETE USER MODAL -->
+  <app-delete-modal
+    [(visible)]="isDeleteModalVisible"
+    [user]="userToDelete"
+    [loading]="isDeletingUser"
+    (cancel)="closeDeleteModal()"
+    (confirm)="confirmDeleteUser()"
+  >
+  </app-delete-modal>
 </div>
