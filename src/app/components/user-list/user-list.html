@@ -26,6 +26,7 @@
 
 <div class="position-relative">
   <p-table
+    #dt
     [value]="isLoadingUsers ? [] : users"
     [paginator]="true"
     [rows]="rows"
@@ -37,7 +38,26 @@
     styleClass="p-datatable-striped p-datatable-sm"
     [tableStyle]="{ 'min-width': '50rem' }"
     paginatorStyleClass="custom-paginator"
+    [globalFilterFields]="['name', 'username', 'email', 'phone']"
   >
+    <!-- CAPTION WITH SEARCH -->
+    <ng-template pTemplate="caption">
+      <div class="flex justify-content-end">
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            (input)="filterGlobal($event, dt)"
+            placeholder="General search..."
+            class="p-column-filter"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+
     <!-- HEADER -->
     <ng-template pTemplate="header">
       <tr>
@@ -56,6 +76,80 @@
         </th>
         <th style="width: 7%">Mail</th>
         <th style="width: 15%">Actions</th>
+      </tr>
+      <tr>
+        <th>
+          <p-columnFilter field="id" matchMode="equals" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="number"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="ID"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="name" matchMode="contains" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="text"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="Search by name"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="username" matchMode="contains" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="text"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="Search by username"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="email" matchMode="contains" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="text"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="Search by email"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="phone" matchMode="contains" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="text"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="Search by phone"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th></th>
+        <th></th>
       </tr>
     </ng-template>
 
@@ -102,7 +196,7 @@
       </tr>
     </ng-template>
 
-    <!-- LOADER / EMPTY -->
+    <!-- LOADER -->
     <ng-template pTemplate="emptymessage">
       <tr>
         <td colspan="7" class="text-center py-5">

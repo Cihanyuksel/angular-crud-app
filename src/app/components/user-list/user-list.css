@@ -17,9 +17,8 @@
   background-color: #f8f9fa;
 }
 
-
 :host ::ng-deep .custom-prev .p-button {
-  color: #565557
+  color: #565557;
 }
 
 :host ::ng-deep .custom-refresh .p-button {
@@ -31,7 +30,7 @@
 }
 
 :host ::ng-deep .custom-prev .p-button:hover {
-  background-color: #d9d9d9; 
+  background-color: #d9d9d9;
 }
 
 :host ::ng-deep .custom-refresh .p-button:hover {
@@ -43,9 +42,9 @@
 }
 
 :host ::ng-deep .custom-edit {
-  background-color: transparent !important; 
-  border: 1px solid #5b595b7b !important;  
-  color: #5b595b7b !important;             
+  background-color: transparent !important;
+  border: 1px solid #5b595b7b !important;
+  color: #5b595b7b !important;
 }
 
 :host ::ng-deep .custom-edit:hover {
@@ -55,4 +54,13 @@
 
 .custom-hover {
   transition: all 0.3s ease;
+}
+:host ::ng-deep .column-id .p-inputtext {
+  width: 10px;
+}
+
+.p-column-filter:focus {
+  background-color: var(--bs-primary-subtle) !important;
+  border-color: var(--bs-primary) !important;
+  outline: none !important;
 }

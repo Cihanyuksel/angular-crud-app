@@ -2,6 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 //ui
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -9,6 +10,9 @@ import { RippleModule } from 'primeng/ripple';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
 //project files
 import { AppModalComponent } from '../shared/app-modal/app-modal';
 import { UserFormComponent } from '../shared/user-form/user-form';
@@ -26,12 +30,16 @@ interface PageEvent {
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     TableModule,
     ButtonModule,
     RippleModule,
     TooltipModule,
     DialogModule,
     ProgressSpinnerModule,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule,
     AppModalComponent,
     UserFormComponent,
     DeleteModalComponent,
@@ -152,6 +160,11 @@ export class UserList implements OnInit {
     this.router.navigate(['/users', user.id]);
   }
 
+  filterGlobal(event: Event, dt: any) {
+    const value = (event.target as HTMLInputElement).value;
+    dt.filterGlobal(value, 'contains');
+  }
+  
   // --------- Pagination ---------
   next(): void {
     this.first += this.rows;
