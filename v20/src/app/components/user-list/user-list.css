@@ -1,0 +1,66 @@
+:host ::ng-deep .custom-paginator {
+  background-color: #e6e5e568;
+  padding: 0.5rem;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-page.p-paginator-page-selected {
+  background-color: #9190926c;
+  color: #ffffff;
+}
+
+:host ::ng-deep .clickable-row {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+:host ::ng-deep .clickable-row:hover {
+  background-color: #f8f9fa;
+}
+
+:host ::ng-deep .custom-prev .p-button {
+  color: #565557;
+}
+
+:host ::ng-deep .custom-refresh .p-button {
+  color: #565557;
+}
+
+:host ::ng-deep .custom-next .p-button {
+  color: #565557;
+}
+
+:host ::ng-deep .custom-prev .p-button:hover {
+  background-color: #d9d9d9;
+}
+
+:host ::ng-deep .custom-refresh .p-button:hover {
+  background-color: #d9d9d9;
+}
+
+:host ::ng-deep .custom-next .p-button:hover {
+  background-color: #d9d9d9;
+}
+
+:host ::ng-deep .custom-edit {
+  background-color: transparent !important;
+  border: 1px solid #5b595b7b !important;
+  color: #5b595b7b !important;
+}
+
+:host ::ng-deep .custom-edit:hover {
+  border-color: #ffb300 !important;
+  color: #ffb300 !important;
+}
+
+.custom-hover {
+  transition: all 0.3s ease;
+}
+:host ::ng-deep .column-id .p-inputtext {
+  width: 10px;
+}
+
+.p-column-filter:focus {
+  background-color: var(--bs-primary-subtle) !important;
+  border-color: var(--bs-primary) !important;
+  outline: none !important;
+}

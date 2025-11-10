@@ -1,0 +1,250 @@
+<div class="mb-4">
+  <p-button
+    type="button"
+    icon="pi pi-chevron-left"
+    [disabled]="isFirstPage"
+    (click)="prev()"
+    class="custom-prev"
+    text
+  ></p-button>
+  <p-button
+    type="button"
+    icon="pi pi-refresh"
+    (click)="loadUsers()"
+    class="custom-refresh"
+    text
+  ></p-button>
+  <p-button
+    type="button"
+    icon="pi pi-chevron-right"
+    class="custom-next"
+    [disabled]="isLastPage"
+    (click)="next()"
+    text
+  ></p-button>
+</div>
+
+<div class="position-relative">
+  <p-table
+    #dt
+    [value]="isLoadingUsers ? [] : users"
+    [paginator]="true"
+    [rows]="rows"
+    [first]="first"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    (onPage)="pageChange($event)"
+    [rowsPerPageOptions]="[5, 10, 15]"
+    styleClass="p-datatable-striped p-datatable-sm"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    paginatorStyleClass="custom-paginator"
+    [globalFilterFields]="['name', 'username', 'email', 'phone']"
+  >
+    <!-- CAPTION WITH SEARCH -->
+    <ng-template pTemplate="caption">
+      <div class="flex justify-content-end">
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            (input)="filterGlobal($event, dt)"
+            placeholder="General search..."
+            class="p-column-filter"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id" style="width: 5%">ID <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="name" style="width: 20%">
+          Name <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="username" style="width: 15%">
+          Username <p-sortIcon field="username"></p-sortIcon>
+        </th>
+        <th pSortableColumn="email" style="width: 21%">
+          Email <p-sortIcon field="email"></p-sortIcon>
+        </th>
+        <th pSortableColumn="phone" style="width: 21%">
+          Phone <p-sortIcon field="phone"></p-sortIcon>
+        </th>
+        <th style="width: 7%">Mail</th>
+        <th style="width: 15%">Actions</th>
+      </tr>
+      <tr>
+        <th>
+          <p-columnFilter field="id" matchMode="equals" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="number"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="ID"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="name" matchMode="contains" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="text"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="Search by name"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="username" matchMode="contains" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="text"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="Search by username"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="email" matchMode="contains" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="text"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="Search by email"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter field="phone" matchMode="contains" [showMenu]="false">
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+              <input
+                pInputText
+                type="text"
+                [ngModel]="value"
+                (ngModelChange)="filter($event)"
+                placeholder="Search by phone"
+                class="p-column-filter"
+              />
+            </ng-template>
+          </p-columnFilter>
+        </th>
+        <th></th>
+        <th></th>
+      </tr>
+    </ng-template>
+
+    <!-- BODY -->
+    <ng-template pTemplate="body" let-user>
+      <tr class="clickable-row" (click)="viewUser(user)">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td (click)="$event.stopPropagation()">
+          <p-button
+            type="button"
+            icon="pi pi-envelope"
+            [rounded]="true"
+            severity="secondary"
+            pTooltip="Send Email"
+            tooltipPosition="top"
+          />
+        </td>
+        <td (click)="$event.stopPropagation()">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-pencil"
+            class="custom-edit p-button-outlined p-button-sm me-2"
+            pTooltip="Edit User"
+            tooltipPosition="top"
+            (click)="openEditUserModal(user)"
+          ></button>
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-danger p-button-outlined p-button-sm"
+            pTooltip="Delete User"
+            tooltipPosition="top"
+            (click)="openDeleteModal(user)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- LOADER -->
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="text-center py-5">
+          <div *ngIf="isLoadingUsers" class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div *ngIf="!isLoadingUsers && loadUsersError" class="text-danger">
+            {{ loadUsersError }}
+          </div>
+          <div *ngIf="!isLoadingUsers && !loadUsersError" class="text-muted">No users found</div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- ADD BUTTON -->
+    <ng-template pTemplate="paginatorleft">
+      <p-button
+        label="Add User"
+        icon="pi pi-plus"
+        (click)="openAddUserModal()"
+        styleClass="bg-primary-subtle text-primary border-primary"
+      >
+      </p-button>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- ADD USER MODAL -->
+<app-modal header="Add New User" [(visible)]="isAddUserModalVisible">
+  <app-user-form mode="add" (userSaved)="onUserAdded($event)"></app-user-form>
+</app-modal>
+
+<!-- EDIT USER MODAL -->
+<app-modal header="Edit User" [(visible)]="isEditUserModalVisible">
+  <app-user-form
+    mode="edit"
+    [user]="selectedUser"
+    (userSaved)="onUserUpdated($event)"
+    (cancel)="onEditCancel()"
+  ></app-user-form>
+</app-modal>
+
+<!-- DELETE USER MODAL -->
+<app-delete-modal
+  [(visible)]="isDeleteModalVisible"
+  [user]="userToDelete"
+  [loading]="isDeletingUser"
+  (cancel)="closeDeleteModal()"
+  (confirm)="confirmDeleteUser()"
+>
+</app-delete-modal>
