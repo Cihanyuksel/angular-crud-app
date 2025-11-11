@@ -1,0 +1,35 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .user-detail-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  :host ::ng-deep .user-detail-card .p-card-header {
+    padding: 0;
+  }
+  :host ::ng-deep .user-detail-card .p-card-body {
+    padding: 0;
+  }
+  :host ::ng-deep .user-detail-card .p-card-content {
+    padding: 0;
+  }
+  
+  dl.row dt {
+    margin-bottom: 0.5rem;
+  }
+  dl.row dd {
+    margin-bottom: 0.5rem;
+  }
+  
+  .info-link {
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .info-link:hover {
+    text-decoration: underline;
+  }
+  

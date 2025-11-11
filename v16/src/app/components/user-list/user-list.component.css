@@ -1,0 +1,95 @@
+@media screen and (max-width: 768px) {
+  ::ng-deep .p-datatable.p-datatable-responsive-stack > .p-datatable-wrapper {
+    overflow-x: auto;
+  }
+
+  ::ng-deep .p-datatable-responsive-stack .p-datatable-thead > tr > th,
+  ::ng-deep .p-datatable-responsive-stack .p-datatable-tfoot > tr > td {
+    display: none !important;
+  }
+
+  ::ng-deep .p-datatable-responsive-stack .p-datatable-tbody > tr > td {
+    display: flex;
+    width: 100% !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border: 0 none;
+    border-bottom: 1px solid #dee2e6;
+
+  }
+
+  ::ng-deep .p-datatable-responsive-stack .p-datatable-tbody > tr > td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    margin-right: 1rem;
+    min-width: 100px;
+  }
+
+  ::ng-deep .p-datatable-responsive-stack .p-datatable-tbody > tr {
+    border: 1px solid #dee2e6;
+    margin-bottom: 1rem;
+    border-radius: 0.375rem;
+  }
+
+  ::ng-deep .p-datatable-wrapper {
+    min-width: auto !important;
+  }
+
+  ::ng-deep .p-paginator {
+    flex-wrap: wrap;
+    justify-content: center !important;
+  }
+
+  ::ng-deep .p-paginator .p-paginator-current {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  ::ng-deep .p-paginator .p-dropdown {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  td[data-label="Actions"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  td[data-label="Actions"]:before {
+    margin-bottom: 0.5rem;
+  }
+
+  td[data-label="Actions"] .d-flex {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .position-relative {
+    overflow-x: auto;
+  }
+
+  ::ng-deep .p-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  ::ng-deep .p-button-sm {
+    display: flex;
+    padding: 0.375rem 0.75rem;
+  }
+}
+
+:host ::ng-deep .clickable-row {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+:host ::ng-deep .clickable-row:hover {
+  background-color:rgba(128, 128, 128, 0.308);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}

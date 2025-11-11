@@ -1,32 +1,9 @@
-<div class="toolbar" role="banner">
-  <h1>app initial</h1>
-  <p-card header="PrimeNG Testi Başarılı!">
-    <p>
-      Eğer bu kutuyu (p-card) ve aşağıdaki mavi butonu (p-button) düzgün bir
-      şekilde görüyorsanız, PrimeNG kurulumunuz tamamlanmıştır.
-    </p>
-
-    <p-button
-      label="Test Butonu"
-      icon="pi pi-check"
-      styleClass="p-button-success"
-    >
-    </p-button>
-  </p-card>
-  <div class="toolbar" role="banner">
-    <h1>app initial</h1>
+<div
+  class="container d-flex flex-column justify-content-center min-vh-100 py-5"
+>
+  <div class="p-5 rounded text-center bg-primary-subtle mb-3">
+    <h1 class="text-primary fw-bold">{{ title }}</h1>
+    <p class="text-muted">Manage your users efficiently with this app.</p>
   </div>
-
-  <div class="container mt-4">
-    <div class="alert alert-success" role="alert">
-      <strong>Bootstrap Testi Başarılı!</strong>
-      Eğer bu yeşil kutuyu görüyorsanız, Bootstrap CSS dosyası düzgün yüklenmiş
-      demektir.
-    </div>
-
-    <button class="btn btn-primary">Bu da Bootstrap Butonu</button>
-  </div>
-  <router-outlet></router-outlet>
+  <router-outlet> </router-outlet>
 </div>
-
-<router-outlet></router-outlet>
